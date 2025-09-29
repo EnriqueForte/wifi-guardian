@@ -13,8 +13,7 @@ __pycache__/
 *.egg
 
 # Informes y artefactos locales
-*.html
-*.md.html
+reports/*.html
 
 # Estado local / datos de usuario
 .wg_baseline.json
