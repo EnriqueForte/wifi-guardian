@@ -1,0 +1,14 @@
+{
+  "by_mac": {
+    "00:90:a9:37:51:c1": { "alias": "NAS WD MyBook" },
+    "68:28:6c:58:94:90": { "alias": "PS5 Pablo" }
+  },
+  "by_ip": {
+    "192.168.1.157": { "alias": "iPhone Kik3" },
+    "192.168.1.148": { "alias": "iPhone Pablo" },
+    "192.168.1.1": { "alias": "Router Salón" },
+    "192.168.1.128": { "alias": "TV Samsung Kik3" },
+    "192.168.1.134": { "alias": "PC Kik3" },
+    "192.168.1.135": { "alias": "PC Pablo" }
+  }
+}

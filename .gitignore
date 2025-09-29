@@ -1,0 +1,27 @@
+# Entornos y dependencias
+.venv/
+env/
+venv/
+pip-wheel-metadata/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+
+# Informes y artefactos locales
+*.html
+*.md.html
+
+# Estado local / datos de usuario
+.wg_baseline.json
+device_alias.json
+
+# SO / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
