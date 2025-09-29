@@ -18,7 +18,7 @@ __pycache__/
 
 # Estado local / datos de usuario
 .wg_baseline.json
-device_alias.json
+devices_alias.json
 
 # SO / IDE
 .DS_Store
