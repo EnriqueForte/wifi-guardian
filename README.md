@@ -100,12 +100,12 @@ Archivo en la raíz **`device_alias.json`**:
     "68:28:6c:58:94:90": { "alias": "PS5" }
   },
   "by_ip": {
-    "192.168.1.1":   { "alias": "ROUTER" },
-    "192.168.1.128": { "alias": "SAMSUNG" },
-    "192.168.1.139": { "alias": "PS5" },
-    "192.168.1.140": { "alias": "NAS" },
-    "192.168.1.148": { "alias": "IPHONE14-A" },
-    "192.168.1.157": { "alias": "IPHONE14-B" }
+    "192.168.1.XXX":   { "alias": "ROUTER" },
+    "192.168.1.XXX": { "alias": "SAMSUNG" },
+    "192.168.1.XXX": { "alias": "PS5" },
+    "192.168.1.XXX": { "alias": "NAS" },
+    "192.168.1.XXX": { "alias": "IPHONE14-A" },
+    "192.168.1.XXX": { "alias": "IPHONE14-B" }
   }
 }
 ```
