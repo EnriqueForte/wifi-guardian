@@ -92,7 +92,14 @@ python -m wifi_guardian vendors-update
 > ```
 
 ## 🏷️ Alias amigables
-Archivo en la raíz **`device_alias.json`**:
+### ¿Dónde pongo mi archivo de alias?
+
+Crea un archivo **privado** con tus alias en la **raíz del proyecto**. Puedes llamarlo:
+
+- `devices_alias.json`
+
+> La app los detecta automáticamente si existen (o puedes pasar la ruta con `--aliases-file`).
+
 ```json
 {
   "by_mac": {
