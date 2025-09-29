@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WiFi Guardian - Informe de escaneo</title>
+<style>
+  :root {
+    --bg:#0b0f10;
+    --panel:#0e1417;
+    --panel-2:#10161a;
+    --grid:#0f171b;
+    --text:#d6f5ea;
+    --muted:#9ec7b8;
+    --neon:#00ff9c;
+    --magenta:#ff2bd6;
+    --cyan:#2affc8;
+    --card-shadow: 0 0 0 1px rgba(0,255,156,0.10), 0 6px 24px rgba(0,0,0,0.4);
+  }
+  * { box-sizing:border-box }
+  html,body { margin:0; background:var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  a { color: var(--neon); text-decoration:none }
+  .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+
+  header {
+    display:flex; align-items:center; gap:14px; margin-bottom:18px;
+  }
+  .logo { display:inline-flex; align-items:center; gap:10px; color:var(--neon); }
+  .logo .badge { font-weight:700; letter-spacing:1px; }
+  .title { font-size:26px; font-weight:800; }
+  .subtitle { color:var(--muted); font-size:14px; }
+
+  .grid {
+    display:grid; gap:14px; grid-template-columns: repeat(12, 1fr);
+  }
+  .col-4 { grid-column: span 4; }
+  .col-8 { grid-column: span 8; }
+  .card {
+    background: radial-gradient(1200px 350px at -10% -10%, rgba(0,255,156,0.06), transparent 60%), var(--panel);
+    border-radius: 14px; padding: 16px; box-shadow: var(--card-shadow);
+  }
+  .kpi { display:flex; align-items:center; gap:10px; }
+  .kpi .num { font-size:28px; font-weight:800; color:var(--neon); }
+  .kpi .lbl { font-size:12px; color:var(--muted); }
+  .split { display:flex; justify-content:space-between; align-items:center; }
+
+  .search {
+    display:flex; gap:10px; align-items:center; margin: 6px 0 10px;
+  }
+  .search input {
+    width: 100%; padding: 10px 12px; border-radius: 10px; background: var(--panel-2); color: var(--text); border: 1px solid #142025;
+    outline: none;
+  }
+
+  table {
+    width:100%; border-collapse:separate; border-spacing:0 6px;
+  }
+  thead th {
+    position: sticky; top: 0; z-index: 1;
+    background: linear-gradient(0deg, rgba(0,255,156,0.04), rgba(0,255,156,0.06));
+    color: var(--text); text-align: left; padding: 10px 12px; font-size: 12px; letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+  }
+  tbody tr {
+    background: var(--grid); box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 -1px 0 rgba(255,255,255,0.03) inset;
+  }
+  tbody td { padding: 10px 12px; vertical-align: middle; font-size: 14px; }
+  tbody td .copy {
+    margin-left: 8px; background: transparent; border: 0; color: var(--muted); cursor: pointer;
+  }
+  tbody tr:hover { outline: 1px solid rgba(0,255,156,0.18); }
+  .chip {
+    display:inline-block; padding: 3px 8px; border-radius: 999px; font-size: 12px; margin-left: 6px; border: 1px solid rgba(255,255,255,0.06);
+  }
+  .panel.warn { background: linear-gradient(180deg, rgba(255,43,214,0.07), rgba(0,0,0,0)); border:1px solid rgba(255,43,214,0.25); }
+  .panel-title { font-weight:700; color:#ffd5f4; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+
+  pre.json { background: #0a1113; border: 1px solid #112025; padding: 12px; border-radius: 12px; overflow: auto; max-height: 300px; }
+
+  @media (max-width: 900px) {
+    .col-4 { grid-column: span 12; }
+    .col-8 { grid-column: span 12; }
+    thead th:nth-child(3), tbody td:nth-child(3) { display:none; } /* oculta Hostname en pantallas pequeñas */
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M2 8a20 20 0 0 1 20 0M5 12a14 14 0 0 1 14 0M8 16a8 8 0 0 1 8 0M12 20h0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg> <span class="badge">WIFI GUARDIAN</span></div>
+      <div>
+        <div class="title">WiFi Guardian - Informe de escaneo</div>
+        <div class="subtitle">Fecha: 2025-09-29 09:59:57 · Interfaz: Ethernet · Red: 192.168.1.X/XX</div>
+      </div>
+    </header>
+
+    <section class="grid" style="margin-bottom:12px">
+      <div class="card col-4">
+        <div class="kpi"><svg viewBox="0 0 24 24" width="16" height="16"><rect x="3" y="4" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8" stroke="currentColor" stroke-width="2" /></svg> <div><div class="num">3</div><div class="lbl">Dispositivos</div></div></div>
+      </div>
+      <div class="card col-4">
+        <div class="kpi" style="color:#9dffc9"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> <div><div class="num">3</div><div class="lbl">Nuevos vs baseline</div></div></div>
+      </div>
+      <div class="card col-4">
+        <div class="kpi" style="color:#ffd0f3"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> <div><div class="num">1</div><div class="lbl">Ausentes vs baseline</div></div></div>
+      </div>
+    </section>
+
+    
+        <div class="panel warn">
+          <div class="panel-title"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z" fill="none" stroke="currentColor" stroke-width="2"/></svg> Anomalías</div>
+          <ul class="anom-list"><li>Nuevos dispositivos: 3</li><li>Dispositivos ausentes respecto a baseline: 1</li></ul>
+        </div>
+        
+
+    <section class="card">
+      <div class="split">
+        <h3 style="margin:0">Inventario</h3>
+        <div class="search">
+          <input id="q" type="search" placeholder="Filtrar por IP, MAC, hostname, alias, vendor..." />
+        </div>
+      </div>
+      <div style="overflow:auto; max-height: 60vh; margin-top:6px;">
+        <table id="devtbl">
+          <thead>
+            <tr>
+              <th data-k="ip">IP</th>
+              <th data-k="mac">MAC</th>
+              <th data-k="host">Hostname</th>
+              <th data-k="alias">Alias</th>
+              <th data-k="note">Notas</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+        <tr>
+          <td class="ip">
+            <span class="mono">192.168.X.X</span>
+            <button class="copy" data-copy="192.168.1.XXX" title="Copiar IP"><svg viewBox="0 0 24 24" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+          </td>
+          <td class="mac">
+            <span class="mono">44:ad:b1:93:3d:83</span>
+            <button class="copy" data-copy="44:ad:b1:93:3d:83" title="Copiar MAC"><svg viewBox="0 0 24 24" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+          </td>
+          <td class="host"></td>
+          <td class="alias">Router Salón</td>
+          <td class="note">vendor:Sagemcom Broadband SAS, alias:custom <span class="chip" style="background:#10122b;color:#9aa0ff">alias</span> <span class="chip" style="background:#122018;color:#2affc8">Sagemcom Broadband SAS</span></td>
+        </tr>
+        
+        <tr>
+          <td class="ip">
+            <span class="mono">192.168.1.XXX</span>
+            <button class="copy" data-copy="192.168.1.XXX" title="Copiar IP"><svg viewBox="0 0 24 24" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+          </td>
+          <td class="mac">
+            <span class="mono">00:90:a9:37:51:c1</span>
+            <button class="copy" data-copy="00:90:a9:37:51:c1" title="Copiar MAC"><svg viewBox="0 0 24 24" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+          </td>
+          <td class="host">MYBOOKLIVE</td>
+          <td class="alias">NAS WD MyBook</td>
+          <td class="note">vendor:WESTERN DIGITAL, alias:custom <span class="chip" style="background:#10122b;color:#9aa0ff">alias</span> <span class="chip" style="background:#122018;color:#2affc8">WESTERN DIGITAL</span></td>
+        </tr>
+        
+        <tr>
+          <td class="ip">
+            <span class="mono">192.168.1.XXX</span>
+            <button class="copy" data-copy="192.168.1.XXX" title="Copiar IP"><svg viewBox="0 0 24 24" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+          </td>
+          <td class="mac">
+            <span class="mono">c2:3a:7a:cd:2a:c2</span>
+            <button class="copy" data-copy="c2:3a:7a:cd:2a:c2" title="Copiar MAC"><svg viewBox="0 0 24 24" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+          </td>
+          <td class="host"></td>
+          <td class="alias">iPhone Kik3</td>
+          <td class="note">mac:private, alias:custom <span class="chip" style="background:#1a1f24;color:#8b9aa0">MAC privada</span> <span class="chip" style="background:#10122b;color:#9aa0ff">alias</span></td>
+        </tr>
+        
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:12px">
+      <div class="panel-title">Resumen técnico (JSON)</div>
+      <pre class="json"><code>{
+  &quot;iface&quot;: &quot;Ethernet&quot;,
+  &quot;cidr&quot;: &quot;192.168.1.X/XX&quot;,
+  &quot;total_devices&quot;: 3,
+  &quot;added_since_baseline&quot;: [
+    &quot;192.168.1.XXX&quot;,
+    &quot;192.168.1.X&quot;,
+    &quot;192.168.1.XXX&quot;
+  ],
+  &quot;removed_since_baseline&quot;: [
+    &quot;192.168.XX.X&quot;
+  ]
+}</code></pre>
+    </section>
+
+    <footer style="opacity:.9; font-size:12px; margin:18px 4px;">
+      <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;">
+        <div>
+          Hecho con ❤️ por <strong>Enrique Forte</strong> · <span class="mono">2025-09-29 09:58:45</span>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <a href="https://www.linkedin.com/in/enriqueforte" target="_blank" rel="noopener" title="LinkedIn" style="display:inline-flex; align-items:center; gap:6px; color:var(--neon);">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 4h4v16H4zM9 10h4v10H9zM14 10h4v10h-4z" fill="currentColor"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/EnriqueForte" target="_blank" rel="noopener" title="GitHub" style="display:inline-flex; align-items:center; gap:6px; color:var(--neon);">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 .5a12 12 0 00-3.79 23.39c.6.11.82-.26.82-.58v-2.18c-3.34.73-4.05-1.61-4.05-1.61-.55-1.41-1.35-1.79-1.35-1.79-1.1-.76.09-.74.09-.74 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.84 1.31 3.53 1 .11-.79.42-1.31.77-1.61-2.66-.3-5.46-1.33-5.46-5.91 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.46 11.46 0 016 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.59-2.81 5.61-5.49 5.91.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.83.58A12 12 0 0012 .5z" fill="currentColor"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+<script>
+  // filtro rápido
+  const q = document.getElementById('q');
+  const tbody = document.querySelector('#devtbl tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  function norm(s) { return (s||'').toLowerCase(); }
+
+  q.addEventListener('input', () => {
+    const term = norm(q.value);
+    rows.forEach(tr => {
+      const txt = norm(tr.innerText);
+      tr.style.display = txt.includes(term) ? '' : 'none';
+    });
+  });
+
+  // sort básico por columna
+  let sortDir = 1, lastKey = null;
+  document.querySelectorAll('#devtbl thead th').forEach(th => {
+    th.addEventListener('click', () => {
+      const k = th.getAttribute('data-k');
+      if (!k) return;
+      if (k === lastKey) sortDir *= -1; else sortDir = 1;
+      lastKey = k;
+
+      const getVal = (tr) => {
+        if (k === 'ip')   return tr.querySelector('td.ip .mono')?.textContent.trim() || '';
+        if (k === 'mac')  return tr.querySelector('td.mac .mono')?.textContent.trim() || '';
+        if (k === 'host') return tr.querySelector('td.host')?.textContent.trim() || '';
+        if (k === 'alias')return tr.querySelector('td.alias')?.textContent.trim() || '';
+        return tr.querySelector('td.note')?.textContent.trim() || '';
+      };
+      rows.sort((a,b) => {
+        const va = getVal(a).toLowerCase();
+        const vb = getVal(b).toLowerCase();
+        if (va < vb) return -1 * sortDir;
+        if (va > vb) return  1 * sortDir;
+        return 0;
+      });
+      rows.forEach(r => tbody.appendChild(r));
+    });
+  });
+
+  // copiar al portapapeles
+  document.querySelectorAll('button.copy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const txt = btn.getAttribute('data-copy');
+      try {
+        await navigator.clipboard.writeText(txt);
+        btn.style.color = '#00ff9c';
+        setTimeout(() => btn.style.color = '', 700);
+      } catch(e) { console.log('copy fail', e); }
+    });
+  });
+</script>
+</body>
+</html>

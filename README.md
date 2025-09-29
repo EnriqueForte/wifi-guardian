@@ -143,6 +143,16 @@ wifi-guardian/
    └─ deauth.py          # detector de deauth (Linux + monitor)
 ```
 
+## 🖼️ Ejemplo de informe
+
+![Informe HTML (tema oscuro)](docs/report-sample.png)
+
+> Puedes descargar/ver el informe ejemplo aquí:  
+> **[docs/report-sample.html](docs/report-sample.html)**
+
+> Nota: el archivo HTML se abre localmente en tu navegador al descargarlo; en GitHub verás el código fuente, no la página renderizada.
+
+
 ## 🧱 Limitaciones
 - **Banda 2.4/5 GHz**: no se deduce por ARP/ICMP; requiere API del router o captura 802.11 (modo monitor).
 - **ARP spoof** es heurístico (posibles falsos positivos).
