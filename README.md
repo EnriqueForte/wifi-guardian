@@ -5,6 +5,9 @@ Genera un informe **HTML** con tema oscuro “hacker”, buscador, ordenación e
 
 > ⚠️ Úsala **solo en tu propia red** o con permiso expreso. Algunas funciones requieren privilegios de administrador/root.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](#)
+
 ## ✨ Novedades clave
 - 🎨 **Informe HTML** mejorado (tema oscuro, verde neón, iconos SVG, copiar IP/MAC, cabecera sticky, buscador y ordenación).
 - 🏷️ **Alias amigables** por IP/MAC con formato sencillo (`device_alias.json`).
@@ -153,6 +156,4 @@ Creado por **Enrique Forte**
 ## 📄 Licencia
 MIT.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](#)
 
